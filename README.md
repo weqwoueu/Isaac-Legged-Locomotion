@@ -66,15 +66,15 @@ Isaac-Legged-Locomotion/
   ```bash
   bash deploy_scripts/init_vulkan_550.142.sh(或init_vulkan_535.146.02.sh)
   
-###2. 注入核心配置 (Inject Custom Configs)
-将本仓库 custom_configs/ 下的文件，覆盖至 Isaac Lab 源码的对应目录：
-通用配置类：
-将 velocity_env_cfg.py 覆盖至 source/isaaclab_tasks/isaaclab_tasks/manager_based/locomotion/velocity/
-机型专属配置 (如 Go1, G1, H1)：
-将 go1_flat_env_cfg.py 等覆盖至 .../velocity/config/go1/flat_env_cfg.py
+### 2. 注入核心配置 (Inject Custom Configs)
+- 将本仓库 custom_configs/ 下的文件，覆盖至 Isaac Lab 源码的对应目录：
+- 通用配置类：
+- 将 velocity_env_cfg.py 覆盖至 source/isaaclab_tasks/isaaclab_tasks/manager_based/locomotion/velocity/
+  机型专属配置 (如 Go1, G1, H1)：
+- 将 go1_flat_env_cfg.py 等覆盖至 .../velocity/config/go1/flat_env_cfg.py
 
-###3. 部署预训练模型 (Play Pre-trained Policy)
-将 trained_models/ 目录下的权重文件（如 unitree_go1_rough.pt）放置于 Isaac Lab 的 logs/rsl_rl/... 目录下，并运行推演脚本（带无人机跟拍运镜）即可生成视频：
+### 3. 部署预训练模型 (Play Pre-trained Policy)
+- 将 trained_models/ 目录下的权重文件（如 unitree_go1_rough.pt）放置于 Isaac Lab 的 logs/rsl_rl/... 目录下，并运行推演脚本（带无人机跟拍运镜）即可生成视频：
 code
 Bash
 ./isaaclab.sh -p scripts/reinforcement_learning/rsl_rl/play.py \
@@ -84,10 +84,11 @@ Bash
     --video \
     --video_length 1000
     
- (注：运行结束后，视频将自动保存在对应 logs 目录下的 videos/ 文件夹中。)
+- (注：运行结束后，视频将自动保存在对应 logs 目录下的 videos/ 文件夹中。)
 
- 📬 Contact & Resume
-这是本人的具身智能算法实战项目。欢迎各位同仁交流讨论，若对底层动力学控制或 RL 落地感兴趣，期待与您在面试中深入探讨！
+ ## 📬 Contact & Resume
+- 这是本人的具身智能算法实战项目。欢迎各位同仁交流讨论，若对底层动力学控制或 RL 落地感兴趣，期待与您在面试中深入探讨！
+
 
 
 
