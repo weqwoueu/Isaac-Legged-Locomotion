@@ -55,6 +55,39 @@ Isaac-Legged-Locomotion/
 ├── trained_models/          # 预训练模型权重文件目录
 └── README.md                # 项目说明文档
 
+## 🚀 快速复现指南 (How to Run & Reproduce)
+
+本仓库采用 **“补丁包 (Patch Workspace)”** 模式组织。请在标准 Isaac Lab 环境下，注入本仓库的配置即可复现全部极限抗扰动效果。
+
+### 1. 基础环境准备 (Prerequisites)
+- 请参考官方文档完成 [Isaac Lab (v1.0+)](https://github.com/isaac-sim/IsaacLab) 的安装。
+- **HPC/云容器适配**：若在受限的 Docker/Apptainer 节点中出现 Vulkan 驱动丢失或 OOM 报错，请以 `root` 权限执行本仓库提供的急救脚本，强行挂载 NVIDIA 图形渲染管线：
+- 目前只支持显卡驱动版本535.146.02和550.142使用前请先查看版本是否对应
+  ```bash
+  bash deploy_scripts/init_vulkan_550.142.sh(或init_vulkan_535.146.02.sh)
+  
+###2. 注入核心配置 (Inject Custom Configs)
+将本仓库 custom_configs/ 下的文件，覆盖至 Isaac Lab 源码的对应目录：
+通用配置类：
+将 velocity_env_cfg.py 覆盖至 source/isaaclab_tasks/isaaclab_tasks/manager_based/locomotion/velocity/
+机型专属配置 (如 Go1, G1, H1)：
+将 go1_flat_env_cfg.py 等覆盖至 .../velocity/config/go1/flat_env_cfg.py
+
+###3. 部署预训练模型 (Play Pre-trained Policy)
+将 trained_models/ 目录下的权重文件（如 unitree_go1_rough.pt）放置于 Isaac Lab 的 logs/rsl_rl/... 目录下，并运行推演脚本（带无人机跟拍运镜）即可生成视频：
+code
+Bash
+./isaaclab.sh -p scripts/reinforcement_learning/rsl_rl/play.py \
+    --task Isaac-Velocity-Rough-Unitree-Go1-v0 \
+    --num_envs 1 \
+    --headless \
+    --video \
+    --video_length 1000
+    
+ (注：运行结束后，视频将自动保存在对应 logs 目录下的 videos/ 文件夹中。)
+
+ 📬 Contact & Resume
+这是本人的具身智能算法实战项目。欢迎各位同仁交流讨论，若对底层动力学控制或 RL 落地感兴趣，期待与您在面试中深入探讨！
 
 
 
