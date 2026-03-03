@@ -44,17 +44,20 @@
 - 突破超算节点权限与底层驱动限制，利用 Apptainer 虚拟化技术，手动注入 Vulkan 与 NVIDIA GLX 动态库，打通无头模式 (Headless) 物理渲染链路。
 - 在双 RTX 4090 算力节点上开启大规模并行宇宙，将百万步交互数据收集压缩至分钟级。
 
-## 📂 核心代码目录
-Isaac-Legged-Locomotion/
-├── custom_configs/          # 自定义配置文件目录，包含不同机器人的环境配置和部署脚本
-│   ├── config/              # 机器人环境配置文件
-│   └── deploy_scripts/      # 部署相关的脚本文件
-├── docs/                    # 文档与演示资源目录
-│   ├── gif/                 # GIF 格式的演示文件
-│   └── video/               # MP4 格式的演示视频
-├── trained_models/          # 预训练模型权重文件目录
-└── README.md                # 项目说明文档
+## 📂 核心代码目录 (Repository Structure)
 
+本仓库采用**补丁包（Patch Workspace）**结构，仅包含核心的魔改配置、环境初始化脚本以及预训练好的神经网络权重，以便于无缝嵌入标准的 Isaac Lab 官方框架中：
+
+```text
+Isaac-Legged-Locomotion/
+├── docs/                             # 包含 5 个核心机器人抗扰动/跨地形测试的展示动图
+├── deploy_scripts/                   # 底层环境急救脚本 (DevOps)
+├── custom_configs/                   # 核心物理法则与奖励函数重塑 (Core RL Configs)
+│   ├── velocity_env_cfg.py           # 【全局配置】注入冰面打滑摩擦力 (Friction) 与暴力飞踢扰动 (Push)
+│   └── config                        # 【局部配置】各机器人配置
+├── trained_models/                   # 经 4090 并行训练得到的高鲁棒性策略权重
+└── README.md
+```
 ## 🚀 快速复现指南 (How to Run & Reproduce)
 
 本仓库采用 **“补丁包 (Patch Workspace)”** 模式组织。请在标准 Isaac Lab 环境下，注入本仓库的配置即可复现全部极限抗扰动效果。
@@ -88,6 +91,7 @@ Bash
 
  ## 📬 Contact & Resume
 - 这是本人的具身智能算法实战项目。欢迎各位同仁交流讨论，若对底层动力学控制或 RL 落地感兴趣，期待与您在面试中深入探讨！
+
 
 
 
