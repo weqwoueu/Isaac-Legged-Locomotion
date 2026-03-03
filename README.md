@@ -16,13 +16,13 @@
 ### 🚶 1. 人形双足机器人和机器狗崎岖地形行走 
 | Unitree Go1 复杂崎岖地形越野 (Rough Terrain) | Unitree H1 全尺寸人形崎岖地形盲走 |
 | :---: | :---: |
-| <img src="docs/gif/unitree_go1_rough_chase.giff" width="400"> | <img src="docs/gif/h1_rough.gif" width="400"> |
+| <img src="docs/gif/unitree_go1_rough_chase.gif" width="400"> | <img src="docs/gif/h1_rough.gif" width="400"> |
 | **难点**: 极小支撑多边形、高质心动态平衡 | **难点**: 全尺寸大惯量、无视觉地形自适应 |
 
 ### 🐕 2. 四足机器人抗扰动与大规模并行 (Quadruped Robustness)
 | Unitree Go1 冰面极限打滑求生 ($\mu=0.1$) | ANYmal-C 大规模张量化并行训练阵列 |
 | :---: | :---: |
-| <img src="docs/gif/unitree_go1_flat_ice_r_v.gif" width="400"> | <img src="docs/gif/docs/anymal_flat.gif" width="400"> |
+| <img src="docs/gif/unitree_go1_flat_ice_r_v.gif" width="400"> | <img src="docs/gif/docs/unitree_go1_rough.gif" width="400"> |
 | **技术点**: 极低附着力、涌现高频代偿碎步 | **技术点**: GPU Zero-Copy, 4096 并行宇宙 |
 
 ## 🛠️ 技术深度与工程突破
@@ -59,5 +59,6 @@
 │       ├── config/h1/             # 宇树 H1 专属配置
 │       └── config/go1/            # 宇树 Go1 专属配置
 └── README.md
+
 
 
