@@ -247,7 +247,7 @@ class RewardsCfg:
     dof_torques_l2 = RewTerm(func=mdp.joint_torques_l2, weight=-1.0e-5)#扭矩惩罚
     dof_acc_l2 = RewTerm(func=mdp.joint_acc_l2, weight=-2.5e-7)#加速度惩罚
     action_rate_l2 = RewTerm(func=mdp.action_rate_l2, weight=-0.01)#震动
-    feet_air_time = RewTerm(
+    feet_air_time = RewTerm(#离地时间
         func=mdp.feet_air_time,
         weight=0.125,
         params={

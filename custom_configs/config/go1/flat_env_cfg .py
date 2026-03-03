@@ -28,15 +28,25 @@ class UnitreeGo1FlatEnvCfg(UnitreeGo1RoughEnvCfg):
         self.viewer.env_index = 0  
         self.viewer.asset_name = "robot"   #跟拍
         #固定奔跑方向
+        
         self.commands.base_velocity.ranges.lin_vel_x = (1.0, 1.0)
         self.commands.base_velocity.ranges.lin_vel_y = (0.0, 0.0)
         self.commands.base_velocity.ranges.ang_vel_z = (0.0, 0.0)
 
-        #加速度和扭矩惩罚
-        self.rewards.dof_torques_l2 = RewTerm(func=mdp.joint_torques_l2, weight=-1.0e-4)#扭矩惩罚#-5
-        self.rewards.dof_acc_l2 = RewTerm(func=mdp.joint_acc_l2, weight=-5e-7)#加速度惩罚#-2.5e-7
-        self.rewards.action_rate_l2 = RewTerm(func=mdp.action_rate_l2, weight=-0.01)#震动#-0.01
-
+        """#reward设置
+         self.rewards.dof_torques_l2 = RewTerm(func=mdp.joint_torques_l2, weight=-1.0e-4)#扭矩惩罚#e-5
+        self.rewards.dof_acc_l2 = RewTerm(func=mdp.joint_acc_l2, weight=-2.5e-7)#加速度惩罚#-2.5e-7
+        self.rewards.action_rate_l2 = RewTerm(func=mdp.action_rate_l2, weight=-0.02)#震动惩罚#-0，01
+        self.rewards.flat_orientation_l2 = RewTerm(func=mdp.flat_orientation_l2, weight=0.02)#躯干姿态惩罚#0.0
+        self.rewards.feet_air_time = RewTerm(#离地时间
+        func=mdp.feet_air_time,
+        weight=0.5,#0.125
+        params={
+            "sensor_cfg": SceneEntityCfg("contact_forces", body_names=".*FOOT"),
+            "command_name": "base_velocity",
+            "threshold": 0.5,
+        },
+        )"""
         #摩擦力
         self.events.physics_material = EventTerm(
         func=mdp.randomize_rigid_body_material,

@@ -3,8 +3,13 @@
 #
 # SPDX-License-Identifier: BSD-3-Clause
 
-from isaaclab.utils import configclass
 
+from isaaclab.utils import configclass
+from isaaclab.managers import EventTermCfg as EventTerm
+import isaaclab_tasks.manager_based.locomotion.velocity.mdp as mdp
+from isaaclab.managers import SceneEntityCfg
+from isaaclab.managers import RewardTermCfg as RewTerm
+from isaaclab_tasks.manager_based.locomotion.velocity.velocity_env_cfg import LocomotionVelocityRoughEnvCfg
 from .rough_env_cfg import AnymalCRoughEnvCfg
 
 
@@ -19,6 +24,21 @@ class AnymalCFlatEnvCfg(AnymalCRoughEnvCfg):
         self.viewer.origin_type = "asset_root" 
         self.viewer.env_index = 0  
         self.viewer.asset_name = "robot"   #跟拍
+
+        """#reward设置
+        self.rewards.dof_torques_l2 = RewTerm(func=mdp.joint_torques_l2, weight=-1.0e-4)#扭矩惩罚#e-5
+        self.rewards.dof_acc_l2 = RewTerm(func=mdp.joint_acc_l2, weight=-2.5e-7)#加速度惩罚#-2.5e-7
+        self.rewards.action_rate_l2 = RewTerm(func=mdp.action_rate_l2, weight=-0.02)#震动惩罚#-0，01
+        self.rewards.flat_orientation_l2 = RewTerm(func=mdp.flat_orientation_l2, weight=0.02)#躯干姿态惩罚#0.0
+        self.rewards.feet_air_time = RewTerm(#离地时间
+        func=mdp.feet_air_time,
+        weight=0.5,#0.125
+        params={
+            "sensor_cfg": SceneEntityCfg("contact_forces", body_names=".*FOOT"),
+            "command_name": "base_velocity",
+            "threshold": 0.5,
+        },)"""
+        
 
         # override rewards
         self.rewards.flat_orientation_l2.weight = -5.0
