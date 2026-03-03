@@ -33,32 +33,70 @@
 
 ### 2. 极端域随机化 (Extreme Domain Randomization)
 - 为弥合 Sim-to-Real Gap，在底层 `env_cfg` 中注入严苛的物理约束突变。
-- **低附着力极限测试**: 将 Go1 所在环境的地面摩擦系数随机下限突破至极端的 $\mu \in[0.05, 0.15]$（模拟结冰路面）。策略网络自主舍弃大跨步，涌现 (Emergence) 出高频碎步 (High-frequency Trotting) 以维持质心 (CoM) 投影。
+- **低附着力极限测试**: 将 Go1 所在环境的地面摩擦系数随机下限突破至极端的 $\mu \in[0.1, 0.2]$（模拟结冰路面）。策略网络自主舍弃大跨步，涌现 (Emergence) 出高频碎步 (High-frequency Trotting) 以维持质心 (CoM) 投影。
 
 ### 3. 面向机械硬件寿命的奖励重构 (Hardware-Aware Reward)
 - 发挥机械动力学专业优势，拒绝“只要跑得快就行”的盲目优化。在 Reward 函数中深度耦合了硬件物理极限：
 - 增加对 `dof_torques_l2` (关节输出扭矩峰值) 与 `action_rate_l2` (高频控制指令震荡) 的二次项惩罚。
-- **工程意义**：强制网络输出平滑的 PD 控制器目标角度（$q_{target}$），**最大化保护真实机器人的减速器与电机驱动板免受过载烧毁**，大幅提升实机部署（Deployment）的可行性。
+- **工程意义**：强制网络输出平滑的 PD 控制器目标角度，**最大化保护真实机器人的减速器与电机驱动板免受过载烧毁**，大幅提升实机部署（Deployment）的可行性。
 
 ### 4. HPC 超算容器化极速部署
 - 突破超算节点权限与底层驱动限制，利用 Apptainer 虚拟化技术，手动注入 Vulkan 与 NVIDIA GLX 动态库，打通无头模式 (Headless) 物理渲染链路。
 - 在双 RTX 4090 算力节点上开启大规模并行宇宙，将百万步交互数据收集压缩至分钟级。
 
-## 📂 核心代码目录
+## 📂 核心代码目录 (Repository Structure)
+
+本仓库采用**补丁包（Patch Workspace）**结构，仅包含核心的魔改配置、环境初始化脚本以及预训练好的神经网络权重，以便于无缝嵌入标准的 Isaac Lab 官方框架中：
 
 ```text
-├── scripts/
-│   ├── reinforcement_learning/
-│   │   ├── rsl_rl/
-│   │   │   ├── train.py    # PPO 大规模并行训练入口
-│   │   │   └── play.py     # 策略加载、评估与摄像机跟拍录制
-├── source/isaaclab_tasks/
-│   └── manager_based/locomotion/velocity/
-│       ├── velocity_env_cfg.py    # 包含环境随机化与惩罚项的基类配置
-│       ├── config/g1/             # 宇树 G1 专属物理与动作映射配置
-│       ├── config/h1/             # 宇树 H1 专属配置
-│       └── config/go1/            # 宇树 Go1 专属配置
+Isaac-Legged-Locomotion/
+├── docs/                             # 包含 5 个核心机器人抗扰动/跨地形测试的展示动图
+├── deploy_scripts/                   # 底层环境急救脚本 (DevOps)
+├── custom_configs/                   # 核心物理法则与奖励函数重塑 (Core RL Configs)
+│   ├── velocity_env_cfg.py           # 【全局配置】注入冰面打滑摩擦力 (Friction) 与暴力飞踢扰动 (Push)
+│   └── config                        # 【局部配置】各机器人配置
+├── trained_models/                   # 经 4090 并行训练得到的高鲁棒性策略权重
 └── README.md
+```
+## 🚀 快速复现指南 (How to Run & Reproduce)
+
+本仓库采用 **“补丁包 (Patch Workspace)”** 模式组织。请在标准 Isaac Lab 环境下，注入本仓库的配置即可复现全部极限抗扰动效果。
+
+### 1. 基础环境准备 (Prerequisites)
+- 请参考官方文档完成 [Isaac Lab (v1.0+)](https://github.com/isaac-sim/IsaacLab) 的安装。
+- **HPC/云容器适配**：若在受限的 Docker/Apptainer 节点中出现 Vulkan 驱动丢失或 OOM 报错，请以 `root` 权限执行本仓库提供的急救脚本，强行挂载 NVIDIA 图形渲染管线：
+- 目前只支持显卡驱动版本535.146.02和550.142使用前请先查看版本是否对应
+  ```bash
+  bash deploy_scripts/init_vulkan_550.142.sh(或init_vulkan_535.146.02.sh)
+  
+### 2. 注入核心配置 (Inject Custom Configs)
+- 将本仓库 custom_configs/ 下的文件，覆盖至 Isaac Lab 源码的对应目录：
+- 通用配置类：
+- 将 velocity_env_cfg.py 覆盖至 source/isaaclab_tasks/isaaclab_tasks/manager_based/locomotion/velocity/
+  机型专属配置 (如 Go1, G1, H1)：
+- 将 go1_flat_env_cfg.py 等覆盖至 .../velocity/config/go1/flat_env_cfg.py
+
+### 3. 部署预训练模型 (Play Pre-trained Policy)
+- 将 trained_models/ 目录下的权重文件（如 unitree_go1_rough.pt）放置于 Isaac Lab 的 logs/rsl_rl/... 目录下，并运行推演脚本（带无人机跟拍运镜）即可生成视频：
+code
+Bash
+./isaaclab.sh -p scripts/reinforcement_learning/rsl_rl/play.py \
+    --task Isaac-Velocity-Rough-Unitree-Go1-v0 \
+    --num_envs 1 \
+    --headless \
+    --video \
+    --video_length 1000
+    
+- (注：运行结束后，视频将自动保存在对应 logs 目录下的 videos/ 文件夹中。)
+
+ ## 📬 Contact & Resume
+- liuzijian0801@163.com
+- 这是本人的具身智能算法实战项目。欢迎各位同仁交流讨论，若对底层动力学控制或 RL 落地感兴趣，期待与您在面试中深入探讨！
+
+
+
+
+
 
 
 
