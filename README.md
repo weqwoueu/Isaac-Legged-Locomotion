@@ -16,13 +16,13 @@
 ### 🚶 1. 人形双足机器人和机器狗崎岖地形行走 
 | Unitree Go1 复杂崎岖地形越野 (Rough Terrain) | Unitree H1 全尺寸人形崎岖地形盲走 |
 | :---: | :---: |
-| <img src="docs/gif/unitree_go1_rough_chase.giff" width="400"> | <img src="docs/gif/h1_rough.gif" width="400"> |
+| <img src="docs/gif/unitree_go1_rough_chase.gif" width="400"> | <img src="docs/gif/h1_rough.gif" width="400"> |
 | **难点**: 极小支撑多边形、高质心动态平衡 | **难点**: 全尺寸大惯量、无视觉地形自适应 |
 
 ### 🐕 2. 四足机器人抗扰动与大规模并行 (Quadruped Robustness)
 | Unitree Go1 冰面极限打滑求生 ($\mu=0.1$) | ANYmal-C 大规模张量化并行训练阵列 |
 | :---: | :---: |
-| <img src="docs/gif/unitree_go1_flat_ice_r_v.gif" width="400"> | <img src="docs/gif/docs/anymal_flat.gif" width="400"> |
+| <img src="docs/gif/unitree_go1_flat_ice_r_v.gif" width="400"> | <img src="docs/gif/unitree_go1_rough.gif" width="400"> |
 | **技术点**: 极低附着力、涌现高频代偿碎步 | **技术点**: GPU Zero-Copy, 4096 并行宇宙 |
 
 ## 🛠️ 技术深度与工程突破
@@ -33,12 +33,12 @@
 
 ### 2. 极端域随机化 (Extreme Domain Randomization)
 - 为弥合 Sim-to-Real Gap，在底层 `env_cfg` 中注入严苛的物理约束突变。
-- **低附着力极限测试**: 将 Go1 所在环境的地面摩擦系数随机下限突破至极端的 $\mu \in[0.05, 0.15]$（模拟结冰路面）。策略网络自主舍弃大跨步，涌现 (Emergence) 出高频碎步 (High-frequency Trotting) 以维持质心 (CoM) 投影。
+- **低附着力极限测试**: 将 Go1 所在环境的地面摩擦系数随机下限突破至极端的 $\mu \in[0.1, 0.2]$（模拟结冰路面）。策略网络自主舍弃大跨步，涌现 (Emergence) 出高频碎步 (High-frequency Trotting) 以维持质心 (CoM) 投影。
 
 ### 3. 面向机械硬件寿命的奖励重构 (Hardware-Aware Reward)
 - 发挥机械动力学专业优势，拒绝“只要跑得快就行”的盲目优化。在 Reward 函数中深度耦合了硬件物理极限：
 - 增加对 `dof_torques_l2` (关节输出扭矩峰值) 与 `action_rate_l2` (高频控制指令震荡) 的二次项惩罚。
-- **工程意义**：强制网络输出平滑的 PD 控制器目标角度（$q_{target}$），**最大化保护真实机器人的减速器与电机驱动板免受过载烧毁**，大幅提升实机部署（Deployment）的可行性。
+- **工程意义**：强制网络输出平滑的 PD 控制器目标角度，**最大化保护真实机器人的减速器与电机驱动板免受过载烧毁**，大幅提升实机部署（Deployment）的可行性。
 
 ### 4. HPC 超算容器化极速部署
 - 突破超算节点权限与底层驱动限制，利用 Apptainer 虚拟化技术，手动注入 Vulkan 与 NVIDIA GLX 动态库，打通无头模式 (Headless) 物理渲染链路。
@@ -59,5 +59,6 @@
 │       ├── config/h1/             # 宇树 H1 专属配置
 │       └── config/go1/            # 宇树 Go1 专属配置
 └── README.md
+
 
 
