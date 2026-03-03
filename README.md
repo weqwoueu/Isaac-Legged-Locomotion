@@ -45,20 +45,41 @@
 - 在双 RTX 4090 算力节点上开启大规模并行宇宙，将百万步交互数据收集压缩至分钟级。
 
 ## 📂 核心代码目录
+Isaac-Legged-Locomotion
+├── custom_configs/          # 自定义配置文件目录
+│   ├── config/              # 配置根目录
+│   │   ├── anymal_c/        # Anymal C 机器人相关配置
+│   │   │   └── flat_env_cfg.py
+│   │   ├── go1/             # Unitree Go1 机器人相关配置
+│   │   │   ├── flat_env_cfg.py
+│   │   │   └── rough_env_cfg.py
+│   │   └── h1/              # H1 人形机器人相关配置
+│   │       ├── rough_env_cfg.py
+│   │       └── velocity_env_cfg.py
+│   └── deploy_scripts/      # 部署脚本目录
+│       ├── init_vulkan_535.146.02.sh
+│       └── init_vulkan_550.142.sh
+├── docs/                    # 文档与演示资源目录
+│   ├── gif/                 # GIF 演示文件
+│   │   ├── h1_rough.gif
+│   │   ├── unitree_go1_flat_ice_r_v.gif
+│   │   ├── unitree_go1_rough_chase.gif
+│   │   └── unitree_go1_rough.gif
+│   └── video/               # MP4 演示视频
+│       ├── anymal_c_flat_chase.mp4
+│       ├── anymal_c_flat.mp4
+│       ├── h1_rough.mp4
+│       ├── unitree_go1_flat_ice_r_v.mp4
+│       ├── unitree_go1_rough_chase.mp4
+│       └── unitree_go1_rough.mp4
+├── trained_models/          # 预训练模型权重文件
+│   ├── anymal_c_flat.pt
+│   ├── h1_rough.pt
+│   ├── unitree_go1_flat.pt
+│   └── unitree_go1_rough.pt
+└── README.md                # 项目说明文档
 
-```text
-├── scripts/
-│   ├── reinforcement_learning/
-│   │   ├── rsl_rl/
-│   │   │   ├── train.py    # PPO 大规模并行训练入口
-│   │   │   └── play.py     # 策略加载、评估与摄像机跟拍录制
-├── source/isaaclab_tasks/
-│   └── manager_based/locomotion/velocity/
-│       ├── velocity_env_cfg.py    # 包含环境随机化与惩罚项的基类配置
-│       ├── config/g1/             # 宇树 G1 专属物理与动作映射配置
-│       ├── config/h1/             # 宇树 H1 专属配置
-│       └── config/go1/            # 宇树 Go1 专属配置
-└── README.md
+
 
 
 
