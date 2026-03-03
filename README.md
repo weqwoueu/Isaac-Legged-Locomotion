@@ -45,7 +45,15 @@
 - 在双 RTX 4090 算力节点上开启大规模并行宇宙，将百万步交互数据收集压缩至分钟级。
 
 ## 📂 核心代码目录
-Isaac-Legged-Locomotion/├── custom_configs/ # 自定义配置文件目录，包含不同机器人的环境配置和部署脚本│ ├── config/ # 机器人环境配置文件│ └── deploy_scripts/ # 部署相关的脚本文件├── docs/ # 文档与演示资源目录│ ├── gif/ # GIF 格式的演示文件│ └── video/ # MP4 格式的演示视频├── trained_models/ # 预训练模型权重文件目录└── README.md # 项目说明文档
+Isaac-Legged-Locomotion/
+├── custom_configs/          # 自定义配置文件目录，包含不同机器人的环境配置和部署脚本
+│   ├── config/              # 机器人环境配置文件
+│   └── deploy_scripts/      # 部署相关的脚本文件
+├── docs/                    # 文档与演示资源目录
+│   ├── gif/                 # GIF 格式的演示文件
+│   └── video/               # MP4 格式的演示视频
+├── trained_models/          # 预训练模型权重文件目录
+└── README.md                # 项目说明文档
 
 
 
