@@ -51,15 +51,15 @@
 ```text
 Isaac-Legged-Locomotion/
 ├── custom_configs/                 # 核心物理法则与奖励函数重塑 (Core RL Configs)
-│   ├── config/                     # 各机型专属配置 (Robot-specific Configs)
+│   ├── config/                     # 各机型【专属配置】 (Robot-specific Configs)
 │   │   ├── anymal_c/
-│   │   │   └── flat_env_cfg.py     # ANYmal-C：大规模并行阵列与基础速度追踪
+│   │   │   └── flat_env_cfg.py     # ANYmal-C：基础速度追踪
 │   │   ├── go1/
-│   │   │   ├── flat_env_cfg.py     # 宇树 Go1：冰面打滑极限测试 ($\mu=0.1$) 与无人机跟拍视角
-│   │   │   └── rough_env_cfg.py    # 宇树 Go1：崎岖地形越野与暴力飞踢抗扰动
+│   │   │   ├── flat_env_cfg.py     # 宇树 Go1：冰面打滑与暴力飞踢抗扰动极限测试
+│   │   │   └── rough_env_cfg.py    # 宇树 Go1：崎岖地形越野复杂地形自适应
 │   │   └── h1/
 │   │       └── rough_env_cfg.py    # 宇树 H1：全尺寸人形双足机器人复杂地形自适应
-│   └── velocity_env_cfg.py         # 【基类配置】注入硬件寿命保护（极高频震荡惩罚与关节扭矩限幅）
+│   └── velocity_env_cfg.py         # 【全局配置】注入硬件寿命保护（极高频震荡惩罚与关节扭矩限幅）
 ├── deploy_scripts/                 # 底层环境急救脚本 (DevOps & HPC)
 │   ├── init_vulkan_535.146.02.sh   # 突破 HPC 容器权限，针对 535 驱动的 Vulkan 注入脚本
 │   └── init_vulkan_550.142.sh      # 针对 550 驱动的 Vulkan 注入脚本
@@ -107,6 +107,7 @@ Bash
  ## 📬 Contact & Resume
 - liuzijian0801@163.com
 - 这是本人的具身智能算法实战项目。欢迎各位同仁交流讨论，若对底层动力学控制或 RL 落地感兴趣，期待与您在面试中深入探讨！
+
 
 
 
