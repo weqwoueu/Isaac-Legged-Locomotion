@@ -81,6 +81,7 @@ Isaac-Legged-Locomotion/
 - 请参考官方文档完成 [Isaac Lab (v1.0+)](https://github.com/isaac-sim/IsaacLab) 的安装。
 - **HPC/云容器适配**：若在受限的 Docker/Apptainer 节点中出现 Vulkan 驱动丢失或 OOM 报错，请以 `root` 权限执行本仓库提供的急救脚本，强行挂载 NVIDIA 图形渲染管线：
 - 目前只支持显卡驱动版本535.146.02和550.142使用前请先查看版本是否对应
+- 使用前注意更改脚本中的“你的放英伟达对应版本驱动的地址”
   ```bash
   bash deploy_scripts/init_vulkan_550.142.sh(或init_vulkan_535.146.02.sh)
   
@@ -107,6 +108,7 @@ Bash
  ## 📬 Contact & Resume
 - liuzijian0801@163.com
 - 这是本人的具身智能算法实战项目。欢迎各位同仁交流讨论，若对底层动力学控制或 RL 落地感兴趣，期待与您在面试中深入探讨！
+
 
 
 
